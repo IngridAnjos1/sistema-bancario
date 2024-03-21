@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Account {
 
-
   @Id
   private String id;
   private Long accountNumber;
@@ -28,7 +27,6 @@ public class Account {
   private LocalDateTime openingDate;
   // List<Transaction> transactions
   private AccountStatus accountStatus;
-
 
   public Account(AccountDTO accountDTO) {
     this.balance = BigDecimal.ZERO;
