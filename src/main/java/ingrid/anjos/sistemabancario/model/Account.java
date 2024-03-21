@@ -2,7 +2,7 @@ package ingrid.anjos.sistemabancario.model;
 
 import ingrid.anjos.sistemabancario.model.enums.AccountStatus;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Document(collection = "accounts")
 @NoArgsConstructor
-@AllArgsConstructor
-@Document(collation = "accounts")
-
 public class Account {
+
+
   @Id
   private String id;
   private Long accountNumber;
@@ -26,16 +26,19 @@ public class Account {
   private String accountHolder;
   private String password;
   private LocalDateTime openingDate;
+  // List<Transaction> transactions
   private AccountStatus accountStatus;
+
 
   public Account(AccountDTO accountDTO) {
     this.balance = BigDecimal.ZERO;
     this.accountHolder = accountDTO.accountHolder();
     this.openingDate = LocalDateTime.now();
-    this.password = encrypPassword(accountDTO.password());
+    this.password = encryptPassword(accountDTO.password());
     this.accountStatus = AccountStatus.ACTIVE;
   }
-  public String encrypPassword(String rawPassword) {
+
+  public String encryptPassword(String rawPassword) {
     return new BCryptPasswordEncoder().encode(rawPassword);
   }
 }
