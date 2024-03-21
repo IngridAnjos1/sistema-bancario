@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,11 +23,19 @@ public class Account {
   private String id;
   private Long accountNumber;
   private BigDecimal balance;
-  private String accoutHolder;
+  private String accountHolder;
   private String password;
   private LocalDateTime openingDate;
   private AccountStatus accountStatus;
 
-
-
+  public Account(AccountDTO accountDTO) {
+    this.balance = BigDecimal.ZERO;
+    this.accountHolder = accountDTO.accountHolder();
+    this.openingDate = LocalDateTime.now();
+    this.password = encrypPassword(accountDTO.password());
+    this.accountStatus = AccountStatus.ACTIVE;
+  }
+  public String encrypPassword(String rawPassword) {
+    return new BCryptPasswordEncoder().encode(rawPassword);
+  }
 }
